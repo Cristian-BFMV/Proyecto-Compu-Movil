@@ -1,6 +1,8 @@
 import { View, Text, FlatList } from 'react-native';
 import TripSearchResultCard from '../TripSearchResultCard';
 import styles from './styles';
+import { useEffect } from 'react';
+import firebase from '../../database/firebase';
 
 const tripReusults = [
   {
@@ -27,6 +29,16 @@ const tripReusults = [
 ];
 
 const TripSearchResults = () => {
+  useEffect(() => {
+    const getTrips = async () => {
+      const querySnapshot = await firebase.getDocs(firebase.collection(firebase.db, "trips"));
+      querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    }
+    getTrips()
+  }, [])
   return (
     <View style={styles.tripSearchResultsContainer}>
       <View style={styles.tripSearchResultsHeaderContainer}>
