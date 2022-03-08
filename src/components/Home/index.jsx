@@ -2,6 +2,7 @@ import { View, Text, Image, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import { styles } from './styles';
 import TripCard from '../HomeTripCard';
+import TripSearchResultCard from '../TripSearchResultCard';
 
 const recentTrips = [
   {

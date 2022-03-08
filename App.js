@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import Home from './src/components/Home';
+import TripSearchNavigation from './src/navigation/tripSearchStack';
 
 const Tabs = createBottomTabNavigator();
 
@@ -44,10 +45,10 @@ export default function App() {
             }}
           />
           <Tabs.Screen
-            name="ScreenOne"
-            component={ScreenOne}
+            name="TripSearch"
+            component={TripSearchNavigation}
             options={{
-              title: 'Segunda pantalla',
+              title: 'Buscar',
               tabBarIcon: ({ focused }) => (
                 <AntDesign
                   name="search1"
