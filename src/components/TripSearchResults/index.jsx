@@ -1,55 +1,44 @@
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import TripSearchResultCard from '../TripSearchResultCard';
 import styles from './styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import firebase from '../../database/firebase';
 
-const tripReusults = [
-  {
-    id: '1',
-    companyName: 'Nombre de la empresa',
-    tripDate: '25 de Noviembre',
-    departureTime: '08:00 p.m.',
-    price: '$85.000',
-  },
-  {
-    id: '2',
-    companyName: 'Nombre de la empresa',
-    tripDate: '25 de Noviembre',
-    departureTime: '08:00 p.m.',
-    price: '$85.000',
-  },
-  {
-    id: '3',
-    companyName: 'Nombre de la empresa',
-    tripDate: '25 de Noviembre',
-    departureTime: '08:00 p.m.',
-    price: '$85.000',
-  },
-];
-
 const TripSearchResults = () => {
+  const [trips, setTrips] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+
   useEffect(() => {
     const getTrips = async () => {
-      const querySnapshot = await firebase.getDocs(firebase.collection(firebase.db, "trips"));
-      querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+      const trips = [];
+      setLoading(true);
+      const querySnapshot = await firebase.getDocs(
+        firebase.collection(firebase.db, 'trips')
+      );
+      querySnapshot.forEach(doc => {
+        trips.push({ id: doc.id, ...doc.data() });
       });
-    }
-    getTrips()
-  }, [])
+      setTrips(trips);
+      setLoading(false);
+    };
+
+    getTrips();
+  }, []);
   return (
     <View style={styles.tripSearchResultsContainer}>
       <View style={styles.tripSearchResultsHeaderContainer}>
-        <View style={styles.tripSearchResultsHeaderTitle}>Ciudad de Origen</View>
+        <View>
+          <Text style={styles.tripSearchResultsHeaderTitle}>Ciudad de Origen</Text>
+        </View>
         <View style={styles.tripSearchResultsHeader}>
           <View style={[styles.tripSearchResultsCircle, styles.purpleCircle]}></View>
           <Text style={[styles.tripSearchResultsCityText, styles.purpleText]}>
             Medellín
           </Text>
         </View>
-        <View style={styles.tripSearchResultsHeaderTitle}>Ciudad de Destino</View>
+        <View>
+          <Text style={styles.tripSearchResultsHeaderTitle}>Ciudad de Destino</Text>
+        </View>
         <View style={styles.tripSearchResultsHeader}>
           <View style={[styles.tripSearchResultsCircle, styles.pinkCircle]}></View>
           <Text style={[styles.tripSearchResultsCityText, styles.pinkText]}>Ibague</Text>
@@ -61,13 +50,19 @@ const TripSearchResults = () => {
             Resultados de la busqueda
           </Text>
         </View>
-        <FlatList
-          data={tripReusults}
-          renderItem={({ item }) => {
-            return <TripSearchResultCard {...item} />;
-          }}
-          keyExtractor={({ id }) => id}
-        />
+        {isLoading ? (
+          <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#F09DAF" />
+          </View>
+        ) : (
+          <FlatList
+            data={trips}
+            renderItem={({ item }) => {
+              return <TripSearchResultCard {...item} />;
+            }}
+            keyExtractor={({ id }) => id}
+          />
+        )}
       </View>
     </View>
   );
