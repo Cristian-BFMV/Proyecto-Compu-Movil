@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { View, Text } from 'react-native';
-import { Controller, useForm } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useNavigation } from '@react-navigation/native';
-import FormInput from '../FormInput';
-import Button from '../Button';
+import { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { Text, View } from 'react-native';
+import Button from '../../../../components/Button';
+import FormInput from '../../../../components/FormInput';
 import styles from './styles';
 
 const TripSearch = () => {
@@ -23,8 +23,7 @@ const TripSearch = () => {
     },
   });
   const onSubmit = data => {
-    console.log(data, date);
-    navigation.navigate('TripSearchBuenas');
+    navigation.navigate('TripSearchResults', { ...data });
   };
 
   const onTripDateChange = (event, selectedDate) => {

@@ -1,8 +1,7 @@
-import { View, Text, Image, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { FlatList, Image, Text, View } from 'react-native';
+import TripCard from '../../components/HomeTripCard';
 import { styles } from './styles';
-import TripCard from '../HomeTripCard';
-import TripSearchResultCard from '../TripSearchResultCard';
 
 const recentTrips = [
   {

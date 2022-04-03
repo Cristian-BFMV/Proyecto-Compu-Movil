@@ -1,7 +1,6 @@
-import { View, Text } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import TripSearch from '../components/TripSearch';
-import TripSearchResults from '../components/TripSearchResults';
+import TripSearch from './components/TripSearch';
+import TripSearchResults from './components/TripSearchResults';
 
 const TripSearchStack = createStackNavigator();
 
@@ -14,7 +13,7 @@ const TripSearchScreen = () => {
         options={{ headerShown: false }}
       />
       <TripSearchStack.Screen
-        name="TripSearchBuenas"
+        name="TripSearchResults"
         component={TripSearchResults}
         options={{
           title: 'Viajes',

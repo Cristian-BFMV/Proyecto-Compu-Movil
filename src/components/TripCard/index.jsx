@@ -1,9 +1,21 @@
-import { View, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
-import styles from './styles';
+import { useCallback } from 'react';
+import { Text, View } from 'react-native';
 import Button from '../Button';
+import styles from './styles';
 
-const TripSearchResultCard = ({ companyName, tripDate, departureTime, price }) => {
+const TripCard = ({
+  companyName,
+  tripDate,
+  departureTime,
+  price,
+  buttonText,
+  buttonPress,
+}) => {
+  const handleButtonPress = useCallback(() => {
+    buttonPress();
+  }, []);
+
   return (
     <View style={styles.tripResultCard}>
       <View style={styles.tripResultCardHeader}>
@@ -22,14 +34,9 @@ const TripSearchResultCard = ({ companyName, tripDate, departureTime, price }) =
           <Text style={styles.tripResultCardIconText}>{departureTime}</Text>
         </View>
       </View>
-      <Button
-        buttonText="Comprar"
-        onPress={() => {
-          console.log('Buenas');
-        }}
-      />
+      <Button buttonText={buttonText} onPress={handleButtonPress} />
     </View>
   );
 };
 
-export default TripSearchResultCard;
+export default TripCard;

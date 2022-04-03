@@ -1,27 +1,12 @@
-import { View, Text, StyleSheet } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { AntDesign } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
-import Home from './src/components/Home';
-import TripSearchNavigation from './src/navigation/tripSearchStack';
+import { NavigationContainer } from '@react-navigation/native';
+import { StyleSheet, View } from 'react-native';
+import Home from './src/screens/Home';
+import TripsCartScreen from './src/screens/TripsCart';
+import TripSearchNavigation from './src/screens/Tripsearch';
 
 const Tabs = createBottomTabNavigator();
-
-const ScreenOne = () => {
-  return (
-    <View>
-      <Text>Screen one</Text>
-    </View>
-  );
-};
-
-const ScreenTwo = () => {
-  return (
-    <View>
-      <Text>Screen two</Text>
-    </View>
-  );
-};
 
 export default function App() {
   return (
@@ -61,8 +46,8 @@ export default function App() {
             }}
           />
           <Tabs.Screen
-            name="ScreenTwo"
-            component={ScreenTwo}
+            name="TripsCart"
+            component={TripsCartScreen}
             options={{
               title: 'Tercera pantalla',
               tabBarIcon: ({ focused }) => (
