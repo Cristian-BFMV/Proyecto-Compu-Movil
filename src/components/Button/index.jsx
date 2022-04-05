@@ -6,7 +6,7 @@ export default function ({ buttonText, isLoading = false, isInput = false, onPre
   return (
     <React.Fragment>
       {isLoading ? (
-        <ActivityIndicator size="large" color="#33691E" />
+        <ActivityIndicator color="#F09DAF" />
       ) : (
         <TouchableHighlight
           style={isInput ? styles.input : styles.button}

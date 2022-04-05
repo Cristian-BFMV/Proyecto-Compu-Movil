@@ -11,6 +11,7 @@ const TripCard = ({
   price,
   buttonText,
   buttonPress,
+  isLoading
 }) => {
   const handleButtonPress = useCallback(() => {
     buttonPress();
@@ -34,7 +35,7 @@ const TripCard = ({
           <Text style={styles.tripResultCardIconText}>{departureTime}</Text>
         </View>
       </View>
-      <Button buttonText={buttonText} onPress={handleButtonPress} />
+      <Button buttonText={buttonText} onPress={handleButtonPress} isLoading={isLoading} />
     </View>
   );
 };

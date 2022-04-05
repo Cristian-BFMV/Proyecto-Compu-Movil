@@ -1,5 +1,5 @@
 import { useRoute } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { ActivityIndicator, FlatList, Text, View } from 'react-native';
 import TripCard from '../../../../components/TripCard';
 import firebase from '../../../../database/firebase';
@@ -8,6 +8,7 @@ import styles from './styles';
 const TripSearchResults = () => {
   const [trips, setTrips] = useState([]);
   const [isLoading, setLoading] = useState(false);
+  const [createIsLoading, setCreateIsLoading] = useState(false);
   const {
     params: { fromCity, toCity },
   } = useRoute();
@@ -32,6 +33,20 @@ const TripSearchResults = () => {
     getTrips();
   }, []);
 
+  const buyTrip = useCallback(async(trip) => {
+    setCreateIsLoading(true);
+    await firebase.addDoc(firebase.collection(firebase.db, 'owned-trips'), {
+      companyName: trip.companyName,
+      departureTime: trip.departureTime,
+      from: trip.from,
+      price: trip.price,
+      to: trip.to,
+      tripDate: trip.tripDate,
+      terminal: trip.terminal
+    });
+    setCreateIsLoading(false);
+  }, []);
+  
   return (
     <View style={styles.tripSearchResultsContainer}>
       <View style={styles.tripSearchResultsHeaderContainer}>
@@ -68,7 +83,7 @@ const TripSearchResults = () => {
           <FlatList
             data={trips}
             renderItem={({ item }) => {
-              return <TripCard {...item} buttonText="Comprar" />;
+              return <TripCard {...item} buttonText="Comprar" buttonPress={() => buyTrip(item)} isLoading={createIsLoading} />;
             }}
             keyExtractor={({ id }) => id}
           />
