@@ -1,40 +1,45 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { FlatList, Image, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, FlatList, Image, Text, View } from 'react-native';
+import Error from '../../components/Error';
 import TripCard from '../../components/HomeTripCard';
+import firebase from '../../database/firebase';
 import { styles } from './styles';
 
-const recentTrips = [
-  {
-    id: '1',
-    from: 'Medellín',
-    to: 'Ibague',
-    month: 'Enero',
-    day: '24',
-  },
-  {
-    id: '2',
-    from: 'Medellín',
-    to: 'Ibague',
-    month: 'Enero',
-    day: '24',
-  },
-  {
-    id: '3',
-    from: 'Medellín',
-    to: 'Ibague',
-    month: 'Enero',
-    day: '24',
-  },
-  {
-    id: '4',
-    from: 'Medellín',
-    to: 'Ibague',
-    month: 'Enero',
-    day: '24',
-  },
-];
-
 const Home = () => {
+  const [trips, setTrips] = useState([]);
+  const [isLoading, setLoading] = useState(false);
+  const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    const getTrips = async () => {
+      try {
+        const tripsResponse = [];
+        setLoading(true);
+        const query = firebase.query(firebase.collection(firebase.db, 'owned-trips'));
+        const querySnapshot = await firebase.getDocs(query);
+        querySnapshot.forEach(doc => {
+          const trip = doc.data();
+          const day = trip.tripDate.slice(0, trip.tripDate.indexOf(' '));
+          const month = trip.tripDate.slice(trip.tripDate.indexOf(' ') + 1);
+          tripsResponse.push({
+            id: doc.id,
+            ...trip,
+            day,
+            month,
+          });
+        });
+        setTrips(tripsResponse);
+      } catch (error) {
+        setShowError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getTrips();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.homeHeader}>
@@ -55,18 +60,27 @@ const Home = () => {
           <FontAwesome name="search" size={20} color="#5C5C5C" />
         </View>
       </View>
-
-      <View style={styles.homeRecentTrips}>
-        <Text style={styles.homeSubTitle}>Mis Viajes Recientes</Text>
-        <View style={styles.homeRecentTripsList}>
-          <FlatList
-            data={recentTrips}
-            renderItem={({ item }) => <TripCard {...item} />}
-            keyExtractor={item => item.id}
-            horizontal
-          />
-        </View>
-      </View>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <>
+          {showError ? (
+            <Error />
+          ) : (
+            <View style={styles.homeRecentTrips}>
+              <Text style={styles.homeSubTitle}>Mis Viajes Recientes</Text>
+              <View style={styles.homeRecentTripsList}>
+                <FlatList
+                  data={trips}
+                  renderItem={({ item }) => <TripCard {...item} />}
+                  keyExtractor={item => item.id}
+                  horizontal
+                />
+              </View>
+            </View>
+          )}
+        </>
+      )}
     </View>
   );
 };

@@ -2,7 +2,6 @@ import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, View } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import Button from '../../../../components/Button';
 import firebase from '../../../../database/firebase';
 import { styles } from './styles';
 
@@ -62,14 +61,6 @@ const TripCartDetails = () => {
           </View>
           <View style={styles.tripCartDetailsImageContainer}>
             <QRCode size={200} value={`http://tripapp/${tripDetail.tripDate}`} />
-          </View>
-          <View style={styles.tripCartDetailsButtonContainer}>
-            <Button
-              buttonText="Descargar QR"
-              onPress={() => {
-                console.log('Buenas');
-              }}
-            />
           </View>
         </View>
       )}
