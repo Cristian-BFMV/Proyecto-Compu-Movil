@@ -49,7 +49,7 @@ export default function App() {
             name="TripsCart"
             component={TripsCartScreen}
             options={{
-              title: 'Tercera pantalla',
+              title: 'Tiquetes',
               tabBarIcon: ({ focused }) => (
                 <AntDesign
                   name="shoppingcart"
